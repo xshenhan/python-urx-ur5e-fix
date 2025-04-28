@@ -148,8 +148,8 @@ class Robot(URRobot):
         """
         move at given velocities until minimum min_time seconds
         """
-        v = self.csys.orient * m3d.Vector(velocities[:3])
-        w = self.csys.orient * m3d.Vector(velocities[3:])
+        v = self.csys.orient.__matmul__(m3d.Vector(velocities[:3]))
+        w = self.csys.orient.__matmul__(m3d.Vector(velocities[3:]))
         vels = np.concatenate((v.array, w.array))
         return self.speedx("speedl", vels, acc, min_time)
 
@@ -208,7 +208,7 @@ class Robot(URRobot):
         return current transformation from tcp to current csys
         """
         t = self.get_pose(wait, _log)
-        pose = t.pose_vector.tolist()
+        pose = t.pose_vector.array.tolist()
         if roundto:
             pose = [round(i, self.max_float_length) for i in pose]
 

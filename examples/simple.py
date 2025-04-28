@@ -5,7 +5,7 @@ import logging
 if __name__ == "__main__":
     logging.basicConfig(level=logging.WARN)
 
-    rob = urx.Robot("192.168.1.100")
+    rob = urx.Robot("192.168.1.243")
     #rob = urx.Robot("localhost")
     rob.set_tcp((0,0,0,0,0,0))
     rob.set_payload(0.5, (0,0,0))
@@ -21,8 +21,8 @@ if __name__ == "__main__":
         print("relative move in base coordinate ")
         rob.translate((0, 0, -l), acc=a, vel=v)
         print("relative move back and forth in tool coordinate")
-        rob.translate_tool((0, 0, -l), acc=a, vel=v)
-        rob.translate_tool((0, 0, l), acc=a, vel=v)
+        # rob.translate_tool((0, 0, -l), acc=a, vel=v)
+        # rob.translate_tool((0, 0, l), acc=a, vel=v)
     finally:
         rob.close()
 

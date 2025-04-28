@@ -164,6 +164,7 @@ class URRTMonitor(threading.Thread):
                     self._ctrlTimestamp - self._last_ctrl_ts)
             self._last_ctrl_ts = self._ctrlTimestamp
             self._qActual = np.array(unp[31:37])
+            self._qdActual = np.array(unp[37:43])
             self._qTarget = np.array(unp[1:7])
             self._tcp_force = np.array(unp[67:73])
             self._tcp = np.array(unp[73:79])
@@ -183,6 +184,16 @@ class URRTMonitor(threading.Thread):
 
         with self._dataEvent:
             self._dataEvent.notifyAll()
+
+    def qd_actual(self, wait=False, timestamp=False):
+        """ Get the actual joint velocity vector."""
+        if wait:
+            self.wait()
+        with self._dataAccess:
+            if timestamp:
+                return self._timestamp, self._qdActual
+            else:
+                return self._qdActual
 
     def start_buffering(self):
         """
@@ -233,6 +244,7 @@ class URRTMonitor(threading.Thread):
                 ctrltimestamp=self._ctrlTimestamp,
                 qActual=self._qActual,
                 qTarget=self._qTarget,
+                qdActual=self._qdActual,
                 tcp=self._tcp,
                 tcp_force=self._tcp_force)
 
